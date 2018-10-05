@@ -8,6 +8,7 @@ use ggez::graphics::{self, Drawable, Point2};
 use ggez::{Context, GameResult};
 use std::env;
 use std::path;
+use rand::{thread_rng, Rng};
 use arsehole::*;
 
 struct MainState {
@@ -40,6 +41,11 @@ impl event::EventHandler for MainState {
 
         let dest_point = graphics::Point2::new(10.0, 10.0);
         graphics::draw(ctx, &self.text, dest_point, 0.0)?;
+
+        if self.frame / 25 >= self.deck.len() {
+            self.frame %= self.deck.len();
+            thread_rng().shuffle(&mut self.deck);
+        }
 
         let card = self.deck[self.frame / 25 % self.deck.len()];
 
