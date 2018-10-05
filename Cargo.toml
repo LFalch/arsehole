@@ -1,0 +1,21 @@
+[package]
+name = "arsehole"
+version = "0.1.0"
+authors = ["LFalch <lucas@wasd.dk>"]
+
+[dependencies]
+ggez = "0.4.4"
+rand = "0.4"
+bincode = "~1"
+serde_derive = "~1"
+serde = "~1"
+sdl2 = "0.31"
+
+[profile.dev]
+opt-level = 2
+
+[profile.test]
+opt-level = 2
+
+[profile.release]
+lto = true
