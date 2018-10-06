@@ -106,3 +106,39 @@ impl Into<u8> for Card {
         }
     }
 }
+
+use std::cmp::Ordering;
+
+trait Ranker {
+    fn beats(c1: &Card, c2: &Card) -> Ordering {
+        match (c1.rank as u8, c2.rank as u8) {
+            (0, 13) => Ordering::Less,
+            (13, 0) => Ordering::Greater,
+            (0, _) => Ordering::Greater,
+            (_, 0) => Ordering::Less,
+            (n, n1) => n.cmp(&n1),
+        }
+     }
+}
+
+struct Krig;
+
+impl Ranker for Krig {}
+
+struct Roevhul;
+
+fn roevhul_rank(r: u8) -> u8 {
+    if r < 2 {
+        r + 13
+    } else if r == 10 || r == 13 {
+        20
+    } else {
+        r
+    }
+}
+
+impl Ranker for Roevhul {
+    fn beats(c1: &Card, c2: &Card) -> Ordering {
+        roevhul_rank(c1.rank as u8).cmp(&roevhul_rank(c2.rank as u8))
+    }
+}

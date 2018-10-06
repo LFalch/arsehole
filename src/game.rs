@@ -3,13 +3,16 @@ use super::Card;
 use rand::{thread_rng, Rng};
 
 #[derive(Debug)]
-pub struct Game {
+
+
+#[derive(Debug)]
+pub struct Game<Name> {
     pub deck: Vec<Card>,
     pub pile: Vec<Card>,
-    pub players: Vec<Player>,
+    pub players: Vec<Player<Name>>,
 }
 
-impl Game {
+impl<Name> Game<Name> {
     pub fn new() -> Self {
         let deck = (0..52).map(|n| Card::from(n)).collect::<Vec<_>>();
         Self {
@@ -37,9 +40,9 @@ impl Game {
             deck.append(&mut player.hand);
         }
     }
-    pub fn add_player<S: ToString>(&mut self, name: S) {
+    pub fn add_player<N: Into<Name>>(&mut self, name: N) {
         self.players.push(Player {
-            name: name.to_string(),
+            name: name.into(),
             hand: Vec::new(),
         });
     }
@@ -79,7 +82,7 @@ impl Game {
 }
 
 #[derive(Debug, Clone)]
-pub struct Player {
-    pub name: String,
+pub struct Player<Name> {
+    pub name: Name,
     pub hand: Vec<Card>,
 }

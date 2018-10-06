@@ -15,25 +15,22 @@ const CARD_WIDTH: f32 = 72.;
 const CARD_HEIGHT: f32 = 96.;
 
 pub struct MainState {
-    text: graphics::Text,
     cards: graphics::Image,
-    game: Game,
+    game: Game<graphics::Text>,
 }
 
 impl MainState {
     fn new(ctx: &mut Context) -> GameResult<MainState> {
-        let font = graphics::Font::new(ctx, "/FiraMono.ttf", 48)?;
-        let text = graphics::Text::new(ctx, "Hello world!", &font)?;
+        let font = graphics::Font::new(ctx, "/FiraMono.ttf", 14)?;
         let cards = graphics::Image::new(ctx, "/cards.png")?;
 
         let mut game = Game::with_jokers();
-        game.add_player("Falch");
-        game.add_player("Dummer");
+        game.add_player(graphics::Text::new(ctx, "Falch", &font)?);
+        game.add_player(graphics::Text::new(ctx, "Dummer", &font)?);
         game.shuffle();
         game.deal_to_all(5);
 
         Ok(MainState {
-            text,
             cards,
             game
         })
@@ -70,9 +67,6 @@ impl event::EventHandler for MainState {
     fn draw(&mut self, ctx: &mut Context) -> GameResult<()> {
         graphics::clear(ctx);
 
-        let dest_point = graphics::Point2::new(10.0, 10.0);
-        graphics::draw(ctx, &self.text, dest_point, 0.0)?;
-
         let mut deck_size = self.game.deck.len()/5;
         if deck_size == 0 && self.game.deck.len() != 0 {
             deck_size = 1;
@@ -85,6 +79,7 @@ impl event::EventHandler for MainState {
             card.draw(ctx, self, 150.+(i as f32 * 0.5), 100.)?;
         }
         for (p, player) in self.game.players.iter().enumerate() {
+            graphics::draw(ctx, &player.name, graphics::Point2::new(120., 440.-(p as f32 * 99.)), 0.0)?;
             for (i, card) in player.hand.iter().enumerate() {
                 card.draw(ctx, self, 200.+(i as f32 * 50.), 440.-(p as f32 * 99.))?;
             }
