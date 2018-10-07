@@ -3,6 +3,14 @@ name = "arsehole"
 version = "0.1.0"
 authors = ["LFalch <lucas@wasd.dk>"]
 
+[[bin]]
+name = "server"
+path = "src/server.rs"
+
+[[bin]]
+name = "arsehole"
+path = "src/main.rs"
+
 [dependencies]
 ggez = "0.4.4"
 rand = "0.4"

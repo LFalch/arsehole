@@ -3,9 +3,6 @@ use super::Card;
 use rand::{thread_rng, Rng};
 
 #[derive(Debug)]
-
-
-#[derive(Debug)]
 pub struct Game<Name> {
     pub deck: Vec<Card>,
     pub pile: Vec<Card>,

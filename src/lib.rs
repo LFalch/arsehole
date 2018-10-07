@@ -1,9 +1,15 @@
 extern crate rand;
+#[macro_use]
+extern crate serde_derive;
+extern crate serde;
+extern crate bincode;
 
 pub mod game;
+pub mod mp;
 
 #[repr(u8)]
 #[derive(Debug, Copy, Clone)]
+#[derive(Serialize, Deserialize)]
 pub enum Suit {
     Clubs = 0,
     Spades = 1,
@@ -30,6 +36,7 @@ impl Suit {
 
 #[repr(u8)]
 #[derive(Debug, Copy, Clone)]
+#[derive(Serialize, Deserialize)]
 pub enum Rank {
     Ace = 0,
     N2 = 1,
@@ -48,6 +55,7 @@ pub enum Rank {
 }
 
 #[derive(Debug, Copy, Clone)]
+#[derive(Serialize, Deserialize)]
 pub struct Card {
     pub rank: Rank,
     pub suit: Suit,
